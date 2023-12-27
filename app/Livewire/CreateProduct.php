@@ -24,6 +24,11 @@ class CreateProduct extends Component implements HasForms
         return view('livewire.create-product');
     }
 
+    public function mount(): void
+    {
+        $this->form->fill();
+    }
+
     public function form(Form $form): Form
     {
         return $form
@@ -40,6 +45,7 @@ class CreateProduct extends Component implements HasForms
                             ->label('Category')
                             ->relationship('categories', 'category_name')
                             ->preload()
+                            ->searchable()
                             ->createOptionForm([
                                 TextInput::make('category_name'),
                             ]),
@@ -51,7 +57,6 @@ class CreateProduct extends Component implements HasForms
 
     public function create(): void
     {
-
         Products::create($this->form->getState());
 
         redirect('products');

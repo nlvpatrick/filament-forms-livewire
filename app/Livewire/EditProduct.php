@@ -47,10 +47,8 @@ class EditProduct extends Component implements HasForms
                         Select::make('category_id')
                             ->label('Category')
                             ->relationship('categories', 'category_name')
-                            ->preload()
-                            ->createOptionForm([
-                                TextInput::make('category_name'),
-                            ]),
+                            ->searchable()
+                            ->preload(),
                     ])->columns(2),
             ])
             ->statePath('data')
