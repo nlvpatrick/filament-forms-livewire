@@ -40,6 +40,7 @@ class CreateProduct extends Component implements HasForms
                             ->required(),
                         TextInput::make('quantity')
                             ->type('number')
+                            ->label('Number')
                             ->live(),
                         TextInput::make('description')
                             ->required(),
