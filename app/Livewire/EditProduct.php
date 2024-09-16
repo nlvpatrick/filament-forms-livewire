@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Products;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -49,6 +50,9 @@ class EditProduct extends Component implements HasForms
                             ->relationship('categories', 'category_name')
                             ->searchable()
                             ->preload(),
+                        FileUpload::make('image')
+                            ->image()
+                            ->imageEditor(),
                     ])->columns(2),
             ])
             ->statePath('data')
@@ -57,7 +61,11 @@ class EditProduct extends Component implements HasForms
 
     public function save(): void
     {
-        Products::find($this->record->id)->update($this->form->getState());
+        $data = $this->form->getState();
+
+        $data['original_quantity'] = $data['quantity'];
+
+        Products::find($this->record->id)->update($data);
 
         redirect('products');
 

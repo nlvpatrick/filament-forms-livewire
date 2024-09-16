@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Products;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -38,7 +39,8 @@ class CreateProduct extends Component implements HasForms
                         TextInput::make('name')
                             ->required(),
                         TextInput::make('quantity')
-                            ->type('number'),
+                            ->type('number')
+                            ->live(),
                         TextInput::make('description')
                             ->required(),
                         Select::make('category_id')
@@ -49,6 +51,9 @@ class CreateProduct extends Component implements HasForms
                             ->createOptionForm([
                                 TextInput::make('category_name'),
                             ]),
+                        FileUpload::make('image')
+                            ->image()
+                            ->imageEditor(),
                     ])->columns(2),
             ])
             ->statePath('data')
@@ -57,7 +62,10 @@ class CreateProduct extends Component implements HasForms
 
     public function create(): void
     {
-        Products::create($this->form->getState());
+        $data = $this->form->getState();
+        $data['original_quantity'] = $data['quantity'];
+
+        Products::create($data);
 
         redirect('products');
 

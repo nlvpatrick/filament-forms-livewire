@@ -8,6 +8,7 @@ use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
@@ -30,6 +31,8 @@ class ListProducts extends Component implements HasForms, HasTable
         return $table
             ->query(Products::query())
             ->columns([
+                ImageColumn::make('image')
+                    ->circular(),
                 TextColumn::make('name')
                     ->searchable(),
                 TextColumn::make('description'),
@@ -44,6 +47,11 @@ class ListProducts extends Component implements HasForms, HasTable
                 // ...
             ])
             ->actions([
+                Action::make('reports')
+                    ->icon('heroicon-o-tag')
+                    ->action(function ($record) {
+                        redirect('report/'.$record->id);
+                    }),
                 Action::make('edit')
                     ->icon('heroicon-o-pencil')
                     ->action(function ($record) {
