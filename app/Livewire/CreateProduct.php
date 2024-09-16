@@ -37,6 +37,7 @@ class CreateProduct extends Component implements HasForms
                 Section::make()
                     ->schema([
                         TextInput::make('name')
+                            ->label('Name')
                             ->required(),
                         TextInput::make('quantity')
                             ->type('number')
